@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Helpers\ApiResponse;
 
 class AuthController extends Controller
 {
@@ -53,5 +54,20 @@ class AuthController extends Controller
             'user'=>$user,
             'token'=>$token
         ]);
+    }
+
+    public function me(Request $request)
+    {
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User profile fetched successfully',
+            'data' =>Auth::user(),
+        ]);
+    }
+
+    public function user(Request $request)
+    {
+        return $this->me($request);
     }
 }

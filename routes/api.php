@@ -8,7 +8,9 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Api\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Api\SubcategoryController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::post('register', [AuthController::class,'register']);
@@ -54,3 +56,6 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
 });
+
+
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
