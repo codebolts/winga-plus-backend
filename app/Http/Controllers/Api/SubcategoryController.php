@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Subcategory;
 use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Subcategory;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class SubcategoryController extends Controller
@@ -53,4 +54,17 @@ class SubcategoryController extends Controller
         $sub->delete();
         return ApiResponse::success('Subcategory deleted', null);
     }
+
+
+        public function fetchByCategory(Category $category)
+    {
+        $subcategories = $category->subcategories()->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Subcategories fetched successfully',
+            'data' => $subcategories
+        ]);
+    }
+
 }

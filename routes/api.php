@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::middleware('auth:sanctum')->group(function () {
+    // Fetch subcategories for a specific category
+    Route::get('/categories/{category}/subcategories', [SubCategoryController::class, 'fetchByCategory']);
+});
+
+
 Route::post('register', [AuthController::class,'register']);
 Route::post('login', [AuthController::class,'login']);
 
