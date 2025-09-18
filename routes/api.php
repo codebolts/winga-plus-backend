@@ -4,14 +4,15 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Buyer\OrderController as BuyerOrderController;
 use App\Http\Controllers\Api\Buyer\ProductController as BuyerProductController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Api\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Api\SubcategoryController;
-use Illuminate\Http\Request;
-use App\Http\Controllers\PromotionController;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -63,10 +64,16 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::delete('reviews/{id}', [ReviewController::class,'destroy']);
     });
 
-    Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/promotions', [PromotionController::class, 'index']);
-    Route::post('/promotions', [PromotionController::class, 'store']);
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/promotions', [PromotionController::class,'index']); // seller view
+    Route::post('/promotions', [PromotionController::class,'store']);
+    Route::get('/promotions/{promotion}', [PromotionController::class,'show']);
+    Route::post('/promotions/{promotion}', [PromotionController::class,'update']);
+    Route::delete('/promotions/{promotion}', [PromotionController::class,'destroy']);
 });
+
+// Public endpoint for buyers
+Route::get('/promotions/active', [PromotionController::class,'activePromotions']);
 
 });
 
