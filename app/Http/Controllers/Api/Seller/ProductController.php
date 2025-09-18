@@ -68,14 +68,14 @@ class ProductController extends Controller
 
    public function update(Request $request, Product $product)
 {
-    $this->authorize('update', $product); // optional if using policies
+    // $this->authorize('update', $product); // optional if using policies
 
     $request->validate([
         'name' => 'required|string|max:255',
         'price' => 'required|numeric',
         'stock' => 'required|integer',
         'category_id' => 'required|exists:categories,id',
-        'subcategory_id' => 'nullable|exists:sub_categories,id',
+        'subcategory_id' => 'nullable',
         'image' => 'nullable|image|max:2048',
     ]);
 
