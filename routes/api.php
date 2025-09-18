@@ -1,19 +1,22 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\Buyer\OrderController as BuyerOrderController;
-use App\Http\Controllers\Api\Buyer\ProductController as BuyerProductController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\PromotionController;
-use App\Http\Controllers\Api\ReviewController;
-use App\Http\Controllers\Api\Seller\OrderController as SellerOrderController;
-use App\Http\Controllers\Api\Seller\ProductController as SellerProductController;
-use App\Http\Controllers\Api\SubcategoryController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\PromotionController;
+use App\Http\Controllers\Api\SubcategoryController;
+use App\Http\Controllers\Api\AdvertisementController;
+use App\Http\Controllers\Api\Buyer\OrderController as BuyerOrderController;
+
+use App\Http\Controllers\Api\Seller\OrderController as SellerOrderController;
+use App\Http\Controllers\Api\Buyer\ProductController as BuyerProductController;
+use App\Http\Controllers\Api\Seller\ProductController as SellerProductController;
 
 
+// Public endpoint
+Route::get('/ads/active', [AdvertisementController::class,'activeAds']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -76,6 +79,16 @@ Route::middleware('auth:sanctum')->group(function() {
 Route::get('/promotions/active', [PromotionController::class,'activePromotions']);
 
 });
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/ads', [AdvertisementController::class,'index']);
+    Route::post('/ads', [AdvertisementController::class,'store']);
+    Route::get('/ads/{advertisement}', [AdvertisementController::class,'show']);
+    Route::post('/ads/{advertisement}', [AdvertisementController::class,'update']);
+    Route::delete('/ads/{advertisement}', [AdvertisementController::class,'destroy']);
+});
+
+
 
 
 // Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
