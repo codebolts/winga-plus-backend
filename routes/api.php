@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Api\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Api\SubcategoryController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PromotionController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -60,6 +62,11 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::put('reviews/{id}', [ReviewController::class,'update']);
         Route::delete('reviews/{id}', [ReviewController::class,'destroy']);
     });
+
+    Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/promotions', [PromotionController::class, 'index']);
+    Route::post('/promotions', [PromotionController::class, 'store']);
+});
 
 });
 
