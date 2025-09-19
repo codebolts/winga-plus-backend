@@ -4,12 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\SubcategoryController;
 use App\Http\Controllers\Api\AdvertisementController;
-use App\Http\Controllers\Api\Buyer\OrderController as BuyerOrderController;
 
+use App\Http\Controllers\Api\Buyer\OrderController as BuyerOrderController;
 use App\Http\Controllers\Api\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Api\Buyer\ProductController as BuyerProductController;
 use App\Http\Controllers\Api\Seller\ProductController as SellerProductController;
@@ -71,7 +72,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/promotions', [PromotionController::class,'index']); // seller view
     Route::post('/promotions', [PromotionController::class,'store']);
     Route::get('/promotions/{promotion}', [PromotionController::class,'show']);
-    Route::post('/promotions/{promotion}', [PromotionController::class,'update']);
+    Route::put('/promotions/{promotion}', [PromotionController::class,'update']);
     Route::delete('/promotions/{promotion}', [PromotionController::class,'destroy']);
 });
 
@@ -84,11 +85,16 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/ads', [AdvertisementController::class,'index']);
     Route::post('/ads', [AdvertisementController::class,'store']);
     Route::get('/ads/{advertisement}', [AdvertisementController::class,'show']);
-    Route::post('/ads/{advertisement}', [AdvertisementController::class,'update']);
+    Route::put('/ads/{advertisement}', [AdvertisementController::class,'update']);
     Route::delete('/ads/{advertisement}', [AdvertisementController::class,'destroy']);
 });
 
 
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/messages/send', [MessageController::class, 'send']);
+    Route::get('/messages/conversation/{userId}', [MessageController::class, 'conversation']);
+    Route::post('/messages/read/{userId}', [MessageController::class, 'markAsRead']);
+});
 
 // Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
