@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\SubCategory;
+use App\Models\Subcategory;
 
 class SubCategorySeeder extends Seeder
 {
@@ -34,7 +34,7 @@ class SubCategorySeeder extends Seeder
         ];
 
         foreach ($subcategories as $sub) {
-            SubCategory::create($sub);
+            Subcategory::create($sub);
         }
     }
 }
