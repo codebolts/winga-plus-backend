@@ -139,27 +139,152 @@ photo: [file]
 }
 ```
 
-## Business Profile Management (Seller Only)
+## Business Profile Management
 
-### Create/Update Business Profile
+### Get Business Profile (Seller Only)
+```http
+GET /seller/business-profile
+Authorization: Bearer {token} (seller only)
+```
+
+**Response (200):**
+```json
+{
+  "status": "success",
+  "message": "Business profile retrieved successfully",
+  "data": {
+    "id": 1,
+    "seller_id": 1,
+    "business_name": "My Store",
+    "description": "Best electronics store",
+    "logo": "/storage/business-logos/logo_1_1234567890.jpg",
+    "website": "https://mystore.com",
+    "free_delivery": true,
+    "delivery_cost": 0,
+    "delivery_locations": "[\"Nairobi\", \"Mombasa\"]",
+    "payment_on_delivery": true,
+    "payment_before_delivery": false,
+    "business_address": "123 Main St, Nairobi",
+    "business_phone": "+254712345678",
+    "created_at": "2025-09-20T08:00:00.000000Z",
+    "updated_at": "2025-09-20T08:00:00.000000Z"
+  }
+}
+```
+
+### Create Business Profile (Seller Only)
 ```http
 POST /seller/business-profile
 Authorization: Bearer {token} (seller only)
 ```
 
-**Request Body:**
+**Request Body (multipart/form-data):**
+```
+business_name: My Store
+description: Best electronics store
+website: https://mystore.com
+logo: [logo_image_file]
+free_delivery: true
+delivery_cost: 0
+delivery_locations: ["Nairobi", "Mombasa"]
+payment_on_delivery: true
+payment_before_delivery: false
+business_address: 123 Main St, Nairobi
+business_phone: +254712345678
+```
+
+**Response (201):**
 ```json
 {
-  "business_name": "My Store",
-  "description": "Best electronics store",
-  "website": "https://mystore.com",
-  "free_delivery": true,
-  "delivery_cost": 0,
-  "delivery_locations": ["Nairobi", "Mombasa"],
-  "payment_on_delivery": true,
-  "payment_before_delivery": false,
-  "business_address": "123 Main St, Nairobi",
-  "business_phone": "+254712345678"
+  "status": "success",
+  "message": "Business profile created successfully",
+  "data": {
+    "id": 1,
+    "seller_id": 1,
+    "business_name": "My Store",
+    "description": "Best electronics store",
+    "logo": "/storage/business-logos/logo_1_1234567890.jpg",
+    "website": "https://mystore.com",
+    "free_delivery": true,
+    "delivery_cost": 0,
+    "delivery_locations": "[\"Nairobi\", \"Mombasa\"]",
+    "payment_on_delivery": true,
+    "payment_before_delivery": false,
+    "business_address": "123 Main St, Nairobi",
+    "business_phone": "+254712345678"
+  }
+}
+```
+
+### Update Business Profile (Seller Only)
+```http
+PUT /seller/business-profile
+Authorization: Bearer {token} (seller only)
+```
+
+**Request Body (multipart/form-data):**
+```
+business_name: My Store
+description: Best electronics store
+website: https://mystore.com
+logo: [logo_image_file]
+free_delivery: true
+delivery_cost: 0
+delivery_locations: ["Nairobi", "Mombasa"]
+payment_on_delivery: true
+payment_before_delivery: false
+business_address: 123 Main St, Nairobi
+business_phone: +254712345678
+```
+
+**Response (200):**
+```json
+{
+  "status": "success",
+  "message": "Business profile updated successfully",
+  "data": {
+    "id": 1,
+    "seller_id": 1,
+    "business_name": "My Store",
+    "description": "Best electronics store",
+    "logo": "/storage/business-logos/logo_1_1234567890.jpg",
+    "website": "https://mystore.com",
+    "free_delivery": true,
+    "delivery_cost": 0,
+    "delivery_locations": "[\"Nairobi\", \"Mombasa\"]",
+    "payment_on_delivery": true,
+    "payment_before_delivery": false,
+    "business_address": "123 Main St, Nairobi",
+    "business_phone": "+254712345678"
+  }
+}
+```
+
+### Delete Business Profile (Seller Only)
+```http
+DELETE /seller/business-profile
+Authorization: Bearer {token} (seller only)
+```
+
+### Get Delivery Settings (Public)
+```http
+GET /sellers/{sellerId}/delivery-settings
+```
+
+**Response (200):**
+```json
+{
+  "status": "success",
+  "message": "Delivery settings retrieved",
+  "data": {
+    "free_delivery": true,
+    "delivery_cost": 0,
+    "payment_on_delivery": true,
+    "payment_before_delivery": false,
+    "delivery_locations": "[\"Nairobi\", \"Mombasa\"]",
+    "business_address": "123 Main St, Nairobi",
+    "business_phone": "+254712345678"
+  }
 }
 ```
 
@@ -656,6 +781,95 @@ POST /cart/move-to-wishlist/{itemId}
 Authorization: Bearer {token} (buyer only)
 ```
 
+## Legal Documents
+
+### Get Terms and Conditions
+```http
+GET /terms-and-conditions
+```
+
+**Response (200):**
+```json
+{
+  "status": "success",
+  "message": "Document retrieved successfully",
+  "data": {
+    "id": 1,
+    "type": "terms_and_conditions",
+    "title": "Terms and Conditions",
+    "content": "# Terms and Conditions\n\n[Full content here...]",
+    "version": "1.0",
+    "is_active": true,
+    "effective_date": "2025-09-20T00:00:00.000000Z",
+    "created_at": "2025-09-20T00:00:00.000000Z",
+    "updated_at": "2025-09-20T00:00:00.000000Z"
+  }
+}
+```
+
+### Get Privacy Policy
+```http
+GET /privacy-policy
+```
+
+**Response (200):**
+```json
+{
+  "status": "success",
+  "message": "Document retrieved successfully",
+  "data": {
+    "id": 2,
+    "type": "privacy_policy",
+    "title": "Privacy Policy",
+    "content": "# Privacy Policy\n\n[Full content here...]",
+    "version": "1.0",
+    "is_active": true,
+    "effective_date": "2025-09-20T00:00:00.000000Z",
+    "created_at": "2025-09-20T00:00:00.000000Z",
+    "updated_at": "2025-09-20T00:00:00.000000Z"
+  }
+}
+```
+
+### Get Legal Document by Type
+```http
+GET /legal-documents/{type}
+```
+
+**Parameters:**
+- `type`: `terms_and_conditions` or `privacy_policy`
+
+### Get All Active Legal Documents
+```http
+GET /legal-documents/active
+```
+
+**Response (200):**
+```json
+{
+  "status": "success",
+  "message": "Active legal documents retrieved successfully",
+  "data": [
+    {
+      "id": 1,
+      "type": "terms_and_conditions",
+      "title": "Terms and Conditions",
+      "version": "1.0",
+      "is_active": true,
+      "effective_date": "2025-09-20T00:00:00.000000Z"
+    },
+    {
+      "id": 2,
+      "type": "privacy_policy",
+      "title": "Privacy Policy",
+      "version": "1.0",
+      "is_active": true,
+      "effective_date": "2025-09-20T00:00:00.000000Z"
+    }
+  ]
+}
+```
+
 ## Reviews
 
 ### Create Review
@@ -1147,6 +1361,21 @@ Authorization: Bearer {token}
   "cart": "Cart",
   "product": "Product",
   "subtotal": "decimal"
+}
+```
+
+### LegalDocument
+```json
+{
+  "id": "integer",
+  "type": "terms_and_conditions|privacy_policy",
+  "title": "string",
+  "content": "string",
+  "version": "string",
+  "is_active": "boolean",
+  "effective_date": "datetime|null",
+  "created_at": "datetime",
+  "updated_at": "datetime"
 }
 ```
 

@@ -17,10 +17,21 @@ use App\Http\Controllers\Api\Seller\ProductController as SellerProductController
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\BusinessProfileController;
+use App\Http\Controllers\Api\LegalDocumentController;
 
 
 // Public endpoint
 Route::get('/ads/active', [AdvertisementController::class,'activeAds']);
+
+// Public business profile endpoints (for buyers to get delivery settings)
+Route::get('/sellers/{sellerId}/delivery-settings', [BusinessProfileController::class, 'getDeliverySettings']);
+
+// Legal documents (public access)
+Route::get('/legal-documents/active', [LegalDocumentController::class, 'active']);
+Route::get('/legal-documents/{type}', [LegalDocumentController::class, 'show']);
+Route::get('/terms-and-conditions', [LegalDocumentController::class, 'termsAndConditions']);
+Route::get('/privacy-policy', [LegalDocumentController::class, 'privacyPolicy']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -83,6 +94,12 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::put('orders/{id}/status', [SellerOrderController::class,'updateStatus']);
         Route::post('categories',[CategoryController::class,'store']);
         Route::post('subcategories',[SubcategoryController::class,'store']);
+
+        // Business profile management
+        Route::get('business-profile', [BusinessProfileController::class, 'show']);
+        Route::post('business-profile', [BusinessProfileController::class, 'store']);
+        Route::put('business-profile', [BusinessProfileController::class, 'update']);
+        Route::delete('business-profile', [BusinessProfileController::class, 'destroy']);
     });
 
     // reports (seller only)
