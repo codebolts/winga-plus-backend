@@ -32,6 +32,7 @@ Route::post('login', [AuthController::class,'login']);
 // auth helpers
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('profile',[AuthController::class,'me']);
+    Route::put('profile/update',[AuthController::class,'updateProfile']);
     Route::post('logout',[AuthController::class,'logout']);
 });
 
@@ -42,6 +43,7 @@ Route::get('subcategories',[SubcategoryController::class,'index']);
 Route::get('subcategories/{id}',[SubcategoryController::class,'show']);
 
 // product browsing
+Route::get('home',[BuyerProductController::class,'home']);
 Route::get('products',[BuyerProductController::class,'index']);
 Route::get('products/{id}',[BuyerProductController::class,'show']);
 Route::get('products/{product}/reviews',[ReviewController::class,'index']);
@@ -96,5 +98,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/messages/conversation/{userId}', [MessageController::class, 'conversation']);
     Route::post('/messages/read/{userId}', [MessageController::class, 'markAsRead']);
 });
+Route::get('/messages/conversations', [MessageController::class, 'conversations'])->middleware('auth:sanctum');
 
 // Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);

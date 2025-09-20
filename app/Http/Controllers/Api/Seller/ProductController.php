@@ -34,6 +34,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'subcategory_id' => 'nullable',
             'image' => 'nullable|image|max:2048', // max 2MB
+            'custom_attributes' => 'nullable|array',
         ]);
 
         $imagePath = null;
@@ -51,13 +52,10 @@ class ProductController extends Controller
             'subcategory_id' => $request->subcategory_id,
             'image' => $imagePath ? '/storage/' . $imagePath : null,
             'seller_id' => Auth::id(),
+            'custom_attributes' => $request->custom_attributes,
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Product created successfully',
-            'data' => $product,
-        ]);
+        return ApiResponse::success('Product created successfully', $product);
     }
 
     public function show($id)
@@ -77,6 +75,7 @@ class ProductController extends Controller
         'category_id' => 'required|exists:categories,id',
         'subcategory_id' => 'nullable',
         'image' => 'nullable|image|max:2048',
+        'custom_attributes' => 'nullable|array',
     ]);
 
     $imagePath = $product->image;
@@ -99,13 +98,10 @@ class ProductController extends Controller
         'category_id' => $request->category_id,
         'subcategory_id' => $request->subcategory_id,
         'image' => $imagePath,
+        'custom_attributes' => $request->custom_attributes,
     ]);
 
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Product updated successfully',
-        'data' => $product
-    ]);
+    return ApiResponse::success('Product updated successfully', $product);
 }
 
 

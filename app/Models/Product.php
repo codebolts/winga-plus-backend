@@ -17,7 +17,14 @@ class Product extends Model
         'description',
         'price',
         'stock',
-        'image'
+        'image',
+        'is_popular',
+        'is_favourite',
+        'custom_attributes'
+    ];
+
+    protected $casts = [
+        'custom_attributes' => 'array',
     ];
 
     public function seller()

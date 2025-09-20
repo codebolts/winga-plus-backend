@@ -9,6 +9,17 @@ use App\Helpers\ApiResponse;
 
 class ProductController extends Controller
 {
+    public function home(Request $request)
+    {
+        $popularProducts = Product::where('is_popular', true)->with('seller', 'reviews')->latest()->take(10)->get();
+        $recentlyAdded = Product::latest()->with('seller', 'reviews')->take(10)->get();
+
+        return ApiResponse::success('Home data retrieved successfully', [
+            'popular_products' => $popularProducts,
+            'recently_added' => $recentlyAdded,
+        ]);
+    }
+
     public function index(Request $request){
         $query = Product::query();
 
@@ -16,13 +27,13 @@ class ProductController extends Controller
         if($request->has('min_price')) $query->where('price','>=',$request->min_price);
         if($request->has('max_price')) $query->where('price','<=',$request->max_price);
 
-        $products = $query->latest()->get();
+        $products = $query->latest()->with('seller','reviews')->get();
 
         return ApiResponse::success('Products retrieved successfully',$products);
     }
 
     public function show($id){
-        $product = Product::with('seller')->findOrFail($id);
+        $product = Product::with('seller')->with('seller','reviews')->findOrFail($id);
         return ApiResponse::success('Product details retrieved successfully',$product);
     }
 }
