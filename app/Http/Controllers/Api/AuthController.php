@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\FacadesStorage;
 use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -20,7 +20,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
             'role' => 'required|in:buyer,seller',
-            'phone_number' => 'nullable|string|max:15',
+            'phone_number' => 'nullable|max:15',
         ]);
 
         $user = User::create([
@@ -61,30 +61,42 @@ class AuthController extends Controller
     }
 
     public function updateProfile(Request $request)
-    {
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:users,email,' . Auth::id(),
-            'phone_number' => 'nullable|string|max:15',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:204800',
-        ]);
+{
+    $user = Auth::user();
+    if (!$user) {
+        return ApiResponse::error('Unauthorized', [], 401);
+    }
 
-        $user = Auth::user();
-        $data = $request->only(['name', 'email', 'phone_number']);
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+        'phone_number' => 'nullable|string|max:15',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB limit
+    ]);
 
-        if ($request->hasFile('photo')) {
-            // Delete old photo if exists
+    if ($validator->fails()) {
+        return ApiResponse::error('Validation failed', $validator->errors(), 422);
+    }
+
+    $data = $request->only(['name', 'email', 'phone_number']);
+
+    if ($request->hasFile('photo')) {
+        try {
+            // Store new photo first
+            $newPhotoPath = $request->file('photo')->store('photos', 'public');
+            // If successful, delete old photo
             if ($user->photo && Storage::disk('public')->exists($user->photo)) {
                 Storage::disk('public')->delete($user->photo);
             }
-            // Store new photo
-            $data['photo'] = $request->file('photo')->store('photos', 'public');
+            $data['photo'] = $newPhotoPath;
+        } catch (\Exception $e) {
+            return ApiResponse::error('Failed to upload photo', [], 500);
         }
-
-        $user->update($data);
-
-        return ApiResponse::success('Profile updated successfully', $user);
     }
+
+    $user->update($data);
+return ApiResponse::success('Profile updated successfully', $user);
+}
 
     public function me(Request $request)
     {

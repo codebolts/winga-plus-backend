@@ -14,6 +14,9 @@ use App\Http\Controllers\Api\Buyer\OrderController as BuyerOrderController;
 use App\Http\Controllers\Api\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Api\Buyer\ProductController as BuyerProductController;
 use App\Http\Controllers\Api\Seller\ProductController as SellerProductController;
+use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\WishlistController;
+use App\Http\Controllers\Api\CartController;
 
 
 // Public endpoint
@@ -32,8 +35,28 @@ Route::post('login', [AuthController::class,'login']);
 // auth helpers
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('profile',[AuthController::class,'me']);
-    Route::put('profile/update',[AuthController::class,'updateProfile']);
+    Route::post('profile/update',[AuthController::class,'updateProfile']);
     Route::post('logout',[AuthController::class,'logout']);
+
+    // Wishlist routes (buyer only)
+    Route::prefix('wishlist')->group(function(){
+        Route::get('/', [WishlistController::class, 'index']);
+        Route::post('/', [WishlistController::class, 'store']);
+        Route::delete('/{productId}', [WishlistController::class, 'destroy']);
+        Route::get('/check/{productId}', [WishlistController::class, 'check']);
+        Route::post('/move-to-cart/{productId}', [WishlistController::class, 'moveToCart']);
+    });
+
+    // Cart routes (buyer only)
+    Route::prefix('cart')->group(function(){
+        Route::get('/', [CartController::class, 'index']);
+        Route::post('/', [CartController::class, 'store']);
+        Route::put('/items/{itemId}', [CartController::class, 'update']);
+        Route::delete('/items/{itemId}', [CartController::class, 'destroy']);
+        Route::delete('/', [CartController::class, 'clear']);
+        Route::get('/summary', [CartController::class, 'summary']);
+        Route::post('/move-to-wishlist/{itemId}', [CartController::class, 'moveToWishlist']);
+    });
 });
 
 // categories/subcategories
@@ -57,8 +80,17 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('orders', [SellerOrderController::class,'index']);
         Route::get('orders/{id}', [SellerOrderController::class,'show']);
         Route::post('orders/{id}/complete', [SellerOrderController::class,'markCompleted']);
+        Route::put('orders/{id}/status', [SellerOrderController::class,'updateStatus']);
         Route::post('categories',[CategoryController::class,'store']);
         Route::post('subcategories',[SubcategoryController::class,'store']);
+    });
+
+    // reports (seller only)
+    Route::middleware('role:seller')->group(function(){
+        Route::get('reports/sales', [ReportController::class, 'getSalesReport']);
+        Route::get('reports/products', [ReportController::class, 'getProductReports']);
+        Route::get('reports/customers', [ReportController::class, 'getCustomerReport']);
+        Route::get('reports/dashboard', [ReportController::class, 'getDashboardStats']);
     });
 
     // buyer
@@ -99,5 +131,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/messages/read/{userId}', [MessageController::class, 'markAsRead']);
 });
 Route::get('/messages/conversations', [MessageController::class, 'conversations'])->middleware('auth:sanctum');
+
 
 // Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);

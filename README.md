@@ -1,71 +1,73 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# WingA Plus Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+An online marketplace built with Laravel, featuring a comprehensive e-commerce platform with user authentication, product management, and more.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **User Authentication**: Registration, login, and profile management with Sanctum tokens
+- **Role-based Access**: Separate controllers for buyers and sellers
+- **Product Management**: Sellers can create and manage products with multiple images
+- **Categories & Subcategories**: Organized product categorization
+- **Order Management**: Complete order lifecycle for buyers and sellers
+- **Reviews System**: Product reviews and ratings
+- **Promotions**: Special offers and discounts
+- **Advertisements**: Featured ads management
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Product Images Feature
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Products now support up to 5 additional images separate from the main product image:
 
-## Learning Laravel
+- **Main Image**: Single primary product image (existing functionality)
+- **Additional Images**: Up to 5 extra images stored in a separate `product_images` table
+- **API Endpoints**:
+  - `POST /api/seller/products`: Create product with `images[]` array (max 5 files)
+  - `PUT /api/seller/products/{id}`: Update product images (replaces existing additional images)
+- **Storage**: Images are stored in `storage/app/public/products/` with proper cleanup on updates/deletes
+- **Response**: Product responses include `images` array ordered by position
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Clone the repository
+2. Run `composer install`
+3. Copy `.env.example` to `.env` and configure your database
+4. Run `php artisan key:generate`
+5. Run `php artisan migrate`
+6. Run `php artisan serve`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## API Documentation
 
-## Laravel Sponsors
+For detailed API documentation including all endpoints, request/response examples, and data structures, see [API.md](API.md).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Quick Overview
 
-### Premium Partners
+The API uses standard REST conventions with JSON responses.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+**Base URL:** `http://localhost:8000/api`
+
+**Authentication:** Bearer token required for protected endpoints
+
+### Key Endpoints
+
+- **Authentication**: `POST /register`, `POST /login`, `GET /profile`, `PUT /profile/update`
+- **Products**: `GET /products`, `GET /seller/products`, `POST /seller/products`
+- **Orders**: `GET /buyer/orders`, `GET /seller/orders`
+- **Reports**: `GET /reports/sales`, `GET /reports/products`, `GET /reports/customers`, `GET /reports/dashboard`
+- **Categories**: `GET /categories`, `GET /subcategories`
+
+### Authentication
+
+All protected routes require Bearer token authentication:
+```
+Authorization: Bearer {token}
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# winga-plus-backend
-Online Market place
->>>>>>> 439f384215b73c6fdebe1b2b7716688f33c3d682
+This project is licensed under the MIT License.

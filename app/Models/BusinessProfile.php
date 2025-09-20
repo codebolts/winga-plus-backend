@@ -12,7 +12,21 @@ class BusinessProfile extends Model
         'business_name',
         'description',
         'logo',
-        'website'
+        'website',
+        'free_delivery',
+        'delivery_cost',
+        'delivery_locations',
+        'payment_on_delivery',
+        'payment_before_delivery',
+        'business_address',
+        'business_phone'
+    ];
+
+    protected $casts = [
+        'free_delivery' => 'boolean',
+        'payment_on_delivery' => 'boolean',
+        'payment_before_delivery' => 'boolean',
+        'delivery_locations' => 'array',
     ];
 
     public function seller()

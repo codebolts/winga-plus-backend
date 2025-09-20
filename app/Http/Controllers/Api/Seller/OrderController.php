@@ -64,4 +64,42 @@ class OrderController extends Controller
         $order->update(['status' => 'completed']);
         return ApiResponse::success('Order marked completed', $order->fresh());
     }
+
+    // Update order status (more flexible than just marking completed)
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,completed,cancelled,shipped,delivered',
+            'delivered_at' => 'nullable|date|after:now',
+            'special_instructions' => 'nullable|string|max:500'
+        ]);
+
+        $sellerId = Auth::id();
+        $order = Order::with('items.product')->findOrFail($id);
+
+        // Check that at least one item belongs to this seller
+        $hasItems = $order->items->contains(function($item) use ($sellerId) {
+            return $item->product && $item->product->seller_id == $sellerId;
+        });
+
+        if (!$hasItems) {
+            return ApiResponse::error('Order not found for this seller', null, 404);
+        }
+
+        $updateData = ['status' => $request->status];
+
+        // If marking as delivered, set delivered_at timestamp
+        if ($request->status === 'delivered') {
+            $updateData['delivered_at'] = now();
+        }
+
+        // Update special instructions if provided
+        if ($request->has('special_instructions')) {
+            $updateData['special_instructions'] = $request->special_instructions;
+        }
+
+        $order->update($updateData);
+
+        return ApiResponse::success('Order status updated successfully', $order->fresh());
+    }
 }
