@@ -19,7 +19,7 @@ class ProductController extends Controller
     {
         $perPage = (int)$request->get('per_page', 15);
         $products = Product::where('seller_id', Auth::id())
-                    ->with(['category','subcategory'])
+                    ->with(['category','subcategory','images','reviews'])
                     ->latest()
                     ->paginate($perPage);
 
@@ -34,7 +34,7 @@ class ProductController extends Controller
            'stock' => 'required|integer',
            'category_id' => 'required|exists:categories,id',
            'subcategory_id' => 'nullable',
-           'descriptiom'=>'nullable',
+           'description'=>'nullable',
            'image' => 'nullable|image|max:2048', // max 2MB
            'images' => 'nullable|array|max:5',
            'images.*' => 'image|max:2048',
