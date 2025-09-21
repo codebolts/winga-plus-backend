@@ -15,10 +15,23 @@ class CategorySeeder extends Seeder
             ['name' => 'Home & Kitchen'],
             ['name' => 'Books'],
             ['name' => 'Sports & Outdoors'],
+            ['name' => 'Beauty & Personal Care'],
+            ['name' => 'Automotive'],
+            ['name' => 'Toys & Games'],
+            ['name' => 'Health & Household'],
+            ['name' => 'Grocery & Gourmet Food'],
+            ['name' => 'Pet Supplies'],
+            ['name' => 'Office Products'],
+            ['name' => 'Tools & Home Improvement'],
+            ['name' => 'Baby Products'],
+            ['name' => 'Arts, Crafts & Sewing'],
         ];
 
         foreach ($categories as $category) {
-            Category::create($category);
+            Category::updateOrCreate(
+                ['name' => $category['name']],
+                $category
+            );
         }
     }
 }
