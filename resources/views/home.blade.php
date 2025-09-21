@@ -100,7 +100,7 @@
                     Welcome to <span class="text-white">Wingaplus</span>
                 </h1>
                 <p class="lead mb-4 text-white">
-                    Discover amazing products from trusted sellers across Kenya
+                    Discover amazing products from trusted sellers across Tanzania
                 </p>
                 <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
                     <a href="#products" class="btn btn-light btn-lg text-teal fw-semibold">
@@ -169,7 +169,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title fw-semibold text-truncate">{{ $product->name }}</h5>
-                            <p class="text-teal fw-bold h5 mb-2">Tz {{ number_format($product->price, 2) }}</p>
+                            <p class="text-teal fw-bold h5 mb-2">Tzs {{ number_format($product->price, 2) }}</p>
                             <p class="text-muted small mb-2">{{ $product->category->name }}</p>
                             <div class="d-flex align-items-center mb-3">
                                 <div class="text-warning me-2">
@@ -208,8 +208,8 @@
                         <div class="display-6 fw-bold text-teal mb-3">{{ $promotion->discount_percentage }}% OFF</div>
                         <h5 class="fw-semibold mb-3">{{ $promotion->product->name }}</h5>
                         <p class="text-muted small mb-3">{{ $promotion->description }}</p>
-                        <div class="h5 fw-bold text-dark mb-1">Tz {{ number_format($promotion->product->price * (1 - $promotion->discount_percentage / 100), 2) }}</div>
-                        <div class="text-muted small text-decoration-line-through">Tz {{ number_format($promotion->product->price, 2) }}</div></search>
+                        <div class="h5 fw-bold text-dark mb-1">Tzs {{ number_format($promotion->product->price * (1 - $promotion->discount_percentage / 100), 2) }}</div>
+                        <div class="text-muted small text-decoration-line-through">Tzs {{ number_format($promotion->product->price, 2) }}</div></search>
                     </div>
                 </div>
                 @endforeach
@@ -245,7 +245,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title fw-semibold text-truncate">{{ $product->name }}</h5>
-                            <p class="text-teal fw-bold h5 mb-2">Tz {{ number_format($product->price, 2) }}</p>
+                            <p class="text-teal fw-bold h5 mb-2">Tzs {{ number_format($product->price, 2) }}</p>
                             <p class="text-muted small mb-2">{{ $product->category->name }}</p>
                             <p class="text-muted small mb-3">Added {{ $product->created_at->diffForHumans() }}</p>
                             <a href="{{ route('product.show', $product->id) }}" class="btn btn-teal text-white w-100">View Details</a>
@@ -263,7 +263,7 @@
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold text-dark mb-3">About Wingaplus</h2>
                 <p class="text-muted lead">
-                    Wingaplus is Kenya's premier online marketplace connecting buyers and sellers nationwide. We provide a secure, user-friendly platform for discovering amazing products and growing your business.
+                    Wingaplus is Tanzania's premier online marketplace connecting buyers and sellers nationwide. We provide a secure, user-friendly platform for discovering amazing products and growing your business.
                 </p>
             </div>
             <div class="row g-4">
@@ -274,7 +274,7 @@
                         </svg>
                     </div>
                     <h4 class="fw-semibold text-dark mb-2">Trusted Sellers</h4>
-                    <p class="text-muted">Connect with verified sellers across Kenya</p>
+                    <p class="text-muted">Connect with verified sellers across Tanzania</p>
                 </div>
                 <div class="col-12 col-md-4 text-center">
                     <div class="d-flex align-items-center justify-content-center bg-teal-light rounded-circle mx-auto mb-3" style="width: 64px; height: 64px;">
@@ -303,7 +303,7 @@
         <div class="container text-center">
             <h2 class="display-5 fw-bold mb-3">Ready to Start Selling?</h2>
             <p class="text-light lead mb-4">
-                Join thousands of sellers on Wingaplus and reach millions of customers across Kenya
+                Join thousands of sellers on Wingaplus and reach millions of customers across Tanzania
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
                 <a href="#" class="btn btn-teal btn-lg fw-semibold text-white">
@@ -323,17 +323,19 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <h4 class="fw-bold mb-3">Wingaplus</h4>
                     <p class="text-muted">
-                        Your ultimate shopping destination in Kenya. Connecting buyers and sellers nationwide.
+                        Your ultimate shopping destination in Tanzania. Connecting buyers and sellers nationwide.
                     </p>
                 </div>
 
                 <div class="col-12 col-md-3 col-lg-2">
                     <h5 class="fw-semibold mb-3">Quick Links</h5>
                     <ul class="list-unstyled text-muted">
-                        <li><a href="#" class="text-decoration-none text-muted">About Us</a></li>
+                        <li><a href="#about" class="text-decoration-none text-muted">About Us</a></li>
                         <li><a href="#" class="text-decoration-none text-muted">How It Works</a></li>
                         <li><a href="#" class="text-decoration-none text-muted">Seller Center</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">Contact Us</a></li>
+                        <li><a href="#contact" class="text-decoration-none text-muted">Contact Us</a></li>
+                        <li><a href="{{ route('terms') }}" class="text-decoration-none text-muted">Terms & Conditions</a></li>
+                        <li><a href="{{ route('privacy') }}" class="text-decoration-none text-muted">Privacy Policy</a></li>
                     </ul>
                 </div>
 

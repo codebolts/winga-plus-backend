@@ -44,5 +44,15 @@ class HomeController extends Controller
 
         return view('product.show', compact('product'));
     }
+
+    public function terms()
+    {
+        return view('terms');
+    }
+
+    public function privacy()
+    {
+        return view('privacy');
+    }
 }
 
