@@ -37,9 +37,9 @@ class AdvertisementController extends Controller
     ]);
 
     $product = Product::findOrFail($request->product_id);
-    if ($product->seller_id !== Auth::id()) {
-        return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
-    }
+    // if ($product->seller_id !== Auth::id()) {
+    //     return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+    // }
 
     // Handle banner image
     $bannerPath = null;
@@ -67,9 +67,9 @@ class AdvertisementController extends Controller
     // Show a single ad
     public function show(Advertisement $advertisement)
     {
-        if ($advertisement->product->seller_id !== Auth::id()) {
-            return response()->json(['status'=>'error','message'=>'Unauthorized'],403);
-        }
+        // if ($advertisement->product->seller_id !== Auth::id()) {
+        //     return response()->json(['status'=>'error','message'=>'Unauthorized'],403);
+        // }
 
         return response()->json([
             'status'=>'success',
