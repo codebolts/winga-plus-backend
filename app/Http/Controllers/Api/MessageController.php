@@ -62,6 +62,26 @@ class MessageController extends Controller
         return ApiResponse::success('Messages marked as read');
     }
 
+    // Delete conversation between logged-in user and another user
+    public function deleteConversation($userId)
+    {
+        // Validate user exists
+        $user = User::findOrFail($userId);
+
+        // Delete all messages between the two users
+        Message::where(function ($q) use ($userId) {
+                $q->where('sender_id', Auth::id())
+                  ->where('receiver_id', $userId);
+            })
+            ->orWhere(function ($q) use ($userId) {
+                $q->where('sender_id', $userId)
+                  ->where('receiver_id', Auth::id());
+            })
+            ->delete();
+
+        return ApiResponse::success('Conversation deleted successfully');
+    }
+
        public function conversations()
 {
     $userId = Auth::id();
@@ -75,9 +95,12 @@ class MessageController extends Controller
             return $msg->sender_id === $userId ? $msg->receiver_id : $msg->sender_id;
         })
         ->map(function($messages, $otherUserId) {
-            $lastMessage = $messages->last();
+            $lastMessage = $messages->first();
             $unreadCount = $messages->where('receiver_id', Auth::id())->where('is_read', false)->count();
             $otherUser = User::find($otherUserId);
+            if (!$otherUser) {
+                return null; // Skip if user not found
+            }
             return [
                 'user' => [
                     'id' => $otherUser->id,
@@ -89,7 +112,9 @@ class MessageController extends Controller
                 'unread_count' => $unreadCount,
                 'last_message_time' => $lastMessage->created_at,
             ];
-        })->values();
+        })->filter(function($item) {
+            return $item !== null;
+        })->sortByDesc('last_message_time')->values();
 
     return ApiResponse::success('Conversations fetched successfully', $conversations);
 }

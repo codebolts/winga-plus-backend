@@ -146,6 +146,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/messages/send', [MessageController::class, 'send']);
     Route::get('/messages/conversation/{userId}', [MessageController::class, 'conversation']);
     Route::post('/messages/read/{userId}', [MessageController::class, 'markAsRead']);
+    Route::delete('/messages/conversation/{userId}', [MessageController::class, 'deleteConversation']);
 });
 Route::get('/messages/conversations', [MessageController::class, 'conversations'])->middleware('auth:sanctum');
 
