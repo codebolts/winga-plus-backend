@@ -120,8 +120,8 @@ class OrderController extends Controller
     {
         $order = Order::where('buyer_id', Auth::id())->findOrFail($id);
 
-        if($order->status !== 'pending'){
-            return ApiResponse::error('Only pending orders can be cancelled', null, 400);
+        if(!in_array($order->status, ['pending', 'processing'])){
+            return ApiResponse::error('Only pending or processing orders can be cancelled', null, 400);
         }
 
         DB::transaction(function() use ($order) {

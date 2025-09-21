@@ -69,7 +69,7 @@ class OrderController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:pending,completed,cancelled,shipped,delivered',
+            'status' => 'required|in:pending,processing,completed,cancelled,shipped,delivered',
             'delivered_at' => 'nullable|date|after:now',
             'special_instructions' => 'nullable|string|max:500'
         ]);
@@ -102,4 +102,5 @@ class OrderController extends Controller
 
         return ApiResponse::success('Order status updated successfully', $order->fresh());
     }
+
 }
