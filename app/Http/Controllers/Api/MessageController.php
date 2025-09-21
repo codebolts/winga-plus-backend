@@ -75,7 +75,7 @@ class MessageController extends Controller
             return $msg->sender_id === $userId ? $msg->receiver_id : $msg->sender_id;
         })
         ->map(function($messages, $otherUserId) {
-            $lastMessage = $messages->last();
+            $lastMessage = $messages->first();
             $unreadCount = $messages->where('receiver_id', Auth::id())->where('is_read', false)->count();
             $otherUser = User::find($otherUserId);
             if (!$otherUser) {
@@ -94,7 +94,7 @@ class MessageController extends Controller
             ];
         })->filter(function($item) {
             return $item !== null;
-        })->values();
+        })->sortByDesc('last_message_time')->values();
 
     return ApiResponse::success('Conversations fetched successfully', $conversations);
 }
