@@ -16,7 +16,7 @@ class OrderController extends Controller
         $sellerId = Auth::id();
         $orders = Order::whereHas('items.product', function($q) use ($sellerId){
             $q->where('seller_id', $sellerId);
-        })->with(['items.product'=>function($q){ $q->with('seller'); }])->latest()->get();
+        })->with(['items.product'=>function($q){ $q->with('seller'); },'buyer'])->latest()->get();
 
         return ApiResponse::success('Seller orders retrieved', $orders);
     }
@@ -25,7 +25,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $sellerId = Auth::id();
-        $order = Order::with('items.product.seller')->findOrFail($id);
+        $order = Order::with('items.product.seller','buyer')->findOrFail($id);
 
         // ensure at least one item belongs to seller
         $has = $order->items->contains(function($it) use ($sellerId){
