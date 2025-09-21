@@ -62,7 +62,7 @@ class MessageController extends Controller
         return ApiResponse::success('Messages marked as read');
     }
 
-    public function conversations()
+       public function conversations()
 {
     $userId = Auth::id();
 
@@ -75,12 +75,9 @@ class MessageController extends Controller
             return $msg->sender_id === $userId ? $msg->receiver_id : $msg->sender_id;
         })
         ->map(function($messages, $otherUserId) {
-            $lastMessage = $messages->first();
+            $lastMessage = $messages->last();
             $unreadCount = $messages->where('receiver_id', Auth::id())->where('is_read', false)->count();
             $otherUser = User::find($otherUserId);
-            if (!$otherUser) {
-                return null; // Skip if user not found
-            }
             return [
                 'user' => [
                     'id' => $otherUser->id,
@@ -92,9 +89,7 @@ class MessageController extends Controller
                 'unread_count' => $unreadCount,
                 'last_message_time' => $lastMessage->created_at,
             ];
-        })->filter(function($item) {
-            return $item !== null;
-        })->sortByDesc('last_message_time')->values();
+        })->values();
 
     return ApiResponse::success('Conversations fetched successfully', $conversations);
 }
