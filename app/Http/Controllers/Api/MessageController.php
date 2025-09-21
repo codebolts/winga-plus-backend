@@ -78,6 +78,9 @@ class MessageController extends Controller
             $lastMessage = $messages->last();
             $unreadCount = $messages->where('receiver_id', Auth::id())->where('is_read', false)->count();
             $otherUser = User::find($otherUserId);
+            if (!$otherUser) {
+                return null; // Skip if user not found
+            }
             return [
                 'user' => [
                     'id' => $otherUser->id,
@@ -89,6 +92,8 @@ class MessageController extends Controller
                 'unread_count' => $unreadCount,
                 'last_message_time' => $lastMessage->created_at,
             ];
+        })->filter(function($item) {
+            return $item !== null;
         })->values();
 
     return ApiResponse::success('Conversations fetched successfully', $conversations);
