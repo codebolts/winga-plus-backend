@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\BusinessProfileController;
 use App\Http\Controllers\Api\LegalDocumentController;
+use App\Http\Controllers\Api\BusinessTypeController;
+use App\Http\Controllers\Api\LocationController;
 
 
 // Public endpoint
@@ -125,6 +127,10 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/promotions/{promotion}', [PromotionController::class,'show']);
     Route::put('/promotions/{promotion}', [PromotionController::class,'update']);
     Route::delete('/promotions/{promotion}', [PromotionController::class,'destroy']);
+
+    // Business types and locations
+    Route::apiResource('business-types', BusinessTypeController::class);
+    Route::apiResource('locations', LocationController::class);
 });
 
 // Public endpoint for buyers
