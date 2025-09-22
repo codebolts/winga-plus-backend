@@ -13,7 +13,7 @@ class PromotionController extends Controller
     public function index()
     {
         $promotions = Promotion::with('product')
-            // ->whereHas('product', fn($q) => $q->where('seller_id', Auth::id()))
+            ->whereHas('product', fn($q) => $q->where('seller_id', Auth::id()))
             ->get();
 
         return response()->json([
@@ -65,9 +65,9 @@ class PromotionController extends Controller
     // Update a promotion
     public function update(Request $request, Promotion $promotion)
     {
-        if ($promotion->product->seller_id !== Auth::id()) {
-            return response()->json(['status'=>'error','message'=>'Unauthorized'],403);
-        }
+        // if ($promotion->product->seller_id !== Auth::id()) {
+        //     return response()->json(['status'=>'error','message'=>'Unauthorized'],403);
+        // }
 
         $request->validate([
             'discount_percentage'=>'required|numeric|min:1|max:100',
@@ -87,9 +87,9 @@ class PromotionController extends Controller
     // Delete a promotion
     public function destroy(Promotion $promotion)
     {
-        if ($promotion->product->seller_id !== Auth::id()) {
-            return response()->json(['status'=>'error','message'=>'Unauthorized'],403);
-        }
+        // if ($promotion->product->seller_id !== Auth::id()) {
+        //     return response()->json(['status'=>'error','message'=>'Unauthorized'],403);
+        // }
 
         $promotion->delete();
 
