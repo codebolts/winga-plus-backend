@@ -94,7 +94,11 @@ class MessageController extends Controller
             // Group by the other user's ID
             return $msg->sender_id === $userId ? $msg->receiver_id : $msg->sender_id;
         })
-        ->map(function($messages, $otherUserId) {
+        ->map(function($messages, $otherUserId) use ($userId) {
+            // Exclude conversations with self
+            if ($otherUserId == $userId) {
+                return null;
+            }
             $lastMessage = $messages->first();
             $unreadCount = $messages->where('receiver_id', Auth::id())->where('is_read', false)->count();
             $otherUser = User::find($otherUserId);
